@@ -1,0 +1,24 @@
+{
+  "bot": {
+    "token": "NzYwOTgwMzQyODQ4NjE4NTI2.X3T8LA.UUuar-3VjDM4qxAiL3uQt42agJk",
+    "prefix": "2!"
+  },
+  "webhook": {
+    "rem": "https://discord.com/api/webhooks/761063846705627147/2OodnofzMn1UNI2QlR22BBmUzq8UMccuFCYW_MwUGz7N2hvx8Uuyi9Hq40dFFgSO856P"
+  },
+  "api": {
+    "kitsu": {
+      "token": "",
+      "URL": "https://kitsu.io/api/edge/anime"
+    },
+    "adshrink": {
+      "token": "36343231375f5673494b4470616c685a46557a4447447058716a3377766d6f63733970416f50",
+      "URL": "https://www.shrink-service.it/v2/public/api/auth/key"
+    }
+  },
+  "server": {
+    "mega": "https://mega.nz/",
+    "mediafire": "https://www.mediafire.com/",
+    "googleDrive": "https://drive.google.com/"
+  }
+}
