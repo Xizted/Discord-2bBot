@@ -1,3 +1,4 @@
+const translate = require("node-google-translate-skidz");
 const hookcord = require(`hookcord`);
 const Hook = new hookcord.Hook();
 const { api, webhook } = require("../config/config.json");
@@ -41,75 +42,87 @@ const sendHook = async (data, link, message) => {
     nsfw,
   } = data;
 
-  server = link.split("//")[1].slice(0, -1).toUpperCase();
-  Hook.setLink(rem)
-    .setPayload({
-      embeds: [
-        {
-          title: title,
-          type: "link",
-          image: {
-            url: posterImage.tiny,
-          },
-          author: {
-            name: message.author.username,
-            icon_url: message.author.avatarURL({ format: "png" }),
-          },
-          fields: [
+  let description;
+
+  translate(
+    {
+      text: `${synopsis}`,
+      source: "en",
+      target: "es",
+    },
+    async (result) => {
+      description = result.translation;
+      server = link.split("//")[1].slice(0, -1).toUpperCase();
+      Hook.setLink(rem)
+        .setPayload({
+          embeds: [
             {
-              name: "Sypnosis",
-              value: `${synopsis}`,
-              inline: false,
-            },
-            {
-              name: "NSFW?",
-              value: nsfw ? "Si" : "No",
-              inline: true,
-            },
-            {
-              name: "Episodios",
-              value:
-                episodeLength != null && episodeLength > 0
-                  ? episodeLength
-                  : totalLength != null && totalLength > 0
-                  ? totalLength
-                  : "Desconocido",
-              inline: true,
-            },
-            {
-              name: "Estado",
-              value: status != "tba" ? "Finalizado" : "En Emision",
-              inline: true,
-            },
-            {
-              name: server,
-              value: `${await shortLink(link, slug, message)}`,
-              inline: true,
+              title: title,
+              description: `${description}`,
+              type: "link",
+              image: {
+                url: posterImage.medium,
+              },
+              author: {
+                name: message.author.username,
+                icon_url: message.author.avatarURL({ format: "png" }),
+              },
+              fields: [
+                {
+                  name: "NSFW?",
+                  value: nsfw ? "Si" : "No",
+                  inline: true,
+                },
+                {
+                  name: "Episodios",
+                  value:
+                    episodeLength != null && episodeLength > 0
+                      ? episodeLength
+                      : totalLength != null && totalLength > 0
+                      ? totalLength
+                      : "Desconocido",
+                  inline: true,
+                },
+                {
+                  name: "Estado",
+                  value: status != "tba" ? "Finalizado" : "En Emision",
+                  inline: true,
+                },
+                {
+                  name: server,
+                  value: `${await shortLink(link, slug, message)}`,
+                  inline: true,
+                },
+              ],
+              timestamp: new Date(),
             },
           ],
-          timestamp: new Date(),
-        },
-      ],
-    })
-    .fire()
-    .then(function (res) {
-      if (res.statusCode === 204) {
-        message.reply(`Tarea Realizada Correctamente, code: ${204}`);
-      }
-    })
-    .catch(function (e) {
-      message.reply(`Ha ocurrido un error:\n${e} 2`);
-    });
+        })
+        .fire()
+        .then(function (res) {
+          if (res.statusCode === 204) {
+            message.reply(`Tarea Realizada Correctamente, code: ${204}`);
+          }
+        })
+        .catch(function (e) {
+          message.reply(`Ha ocurrido un error:\n${e} 2`);
+        });
+    }
+  );
 };
 
 const shortLink = async (link, nombre, message) => {
   try {
-    const resp = await axios.get(`${URL}/${token}/json/${link}`);
+    const resp = await axios.get(`${adshrinkUrl}/${token}/json/${link}`);
 
-    if (!resp.success)
-      message.reply(`No se ha podido procesar su solicitud\n${resp.error}`);
+    const { data } = resp;
 
-    return resp.url;
+    if (!data.success)
+      throw new Error(
+        `No se pudo realizar su peticion de acortar link ${data.message}`
+      );
+
+    return data.url;
   } catch (error) {
     message.reply(`Ha ocurrido un error al acortar el link\n${error}`);
   }
