@@ -1,11 +1,11 @@
 const translate = require("node-google-translate-skidz");
-const hookcord = require(`hookcord`);
-const Hook = new hookcord.Hook();
 const { api, webhook } = require("../config/config.json");
+const { Webhook, MessageBuilder } = require("discord-webhook-node");
 const { rem } = webhook;
+const hook = new Webhook(rem);
 const axios = require("axios").default;
-const { kitsu, adshrink } = api;
-const { URL: adshrinkUrl, token } = adshrink;
+const { kitsu, shortst } = api;
+const { URL: urlShortSt, token } = shortst;
 const { URL: kitsuUrl } = kitsu;
 
 const searchAnime = async (name) => {
@@ -43,7 +43,9 @@ const sendHook = async (data, link, message) => {
   } = data;
 
   let description;
+  let shortL = await shortLink(link, slug, message);
 
+  if (shortL === undefined) return;
   translate(
     {
       text: `${synopsis}`,
@@ -52,59 +54,36 @@ const sendHook = async (data, link, message) => {
     },
     async (result) => {
       description = result.translation;
-      server = link.split("//")[1].slice(0, -1).toUpperCase();
-      Hook.setLink(rem)
-        .setPayload({
-          embeds: [
-            {
-              title: title,
-              description: `${description}`,
-              type: "link",
-              image: {
-                url: posterImage.medium,
-              },
-              author: {
-                name: message.author.username,
-                icon_url: message.author.avatarURL({ format: "png" }),
-              },
-              fields: [
-                {
-                  name: "NSFW?",
-                  value: nsfw ? "Si" : "No",
-                  inline: true,
-                },
-                {
-                  name: "Episodios",
-                  value:
-                    episodeLength != null && episodeLength > 0
-                      ? episodeLength
-                      : totalLength != null && totalLength > 0
-                      ? totalLength
-                      : "Desconocido",
-                  inline: true,
-                },
-                {
-                  name: "Estado",
-                  value: status != "tba" ? "Finalizado" : "En Emision",
-                  inline: true,
-                },
-                {
-                  name: server,
-                  value: `${await shortLink(link, slug, message)}`,
-                  inline: true,
-                },
-              ],
-              timestamp: new Date(),
-            },
-          ],
+      server = link.split("//")[1].split("/")[0].toUpperCase();
+
+      const msg = new MessageBuilder()
+        .setAuthor(
+          message.author.username,
+          message.author.avatarURL({ format: "png" })
+        )
+        .setTitle(title)
+        .setDescription(`${description}`)
+        .setImage(posterImage.medium)
+        .addField("NSFW?", nsfw ? "Si" : "No", true)
+        .addField(
+          "Episodios",
+          episodeLength != null && episodeLength > 0
+            ? episodeLength
+            : totalLength != null && totalLength > 0
+            ? totalLength
+            : "Desconocido",
+          true
+        )
+        .addField("Estado", status != "tba" ? "Finalizado" : "En Emision", true)
+        .addField(server, `${shortL}`, true)
+        .setTimestamp();
+
+      hook
+        .send(msg)
+        .then((res) => {
+          message.reply(`Tarea Realizada con Exito!!!`);
         })
-        .fire()
-        .then(function (res) {
-          if (res.statusCode === 204) {
-            message.reply(`Tarea Realizada Correctamente, code: ${204}`);
-          }
-        })
-        .catch(function (e) {
+        .catch((e) => {
           message.reply(`Ha ocurrido un error:\n${e} 2`);
         });
     }
@@ -113,16 +92,23 @@ const sendHook = async (data, link, message) => {
 
 const shortLink = async (link, nombre, message) => {
   try {
-    const resp = await axios.get(`${adshrinkUrl}/${token}/json/${link}`);
+    const resp = axios({
+      method: "PUT",
+      url: urlShortSt,
+      headers: {
+        "public-api-token": token,
+        "Content-Type": "application/x-www-form-urlencoded",
+        Cookie: "PHPSESSID=51hgonnqkchnb2duqnfhsqm0f6; cookies-enable=1; hl=en",
+      },
+      data: {
+        urlToShorten: link,
+      },
+    });
 
-    const { data } = resp;
-
-    if (!data.success)
-      throw new Error(
-        `No se pudo realizar su peticion de acortar link ${data.message}`
-      );
-
-    return data.url;
+    const { data } = await resp;
+    if (data.status != "ok")
+      throw new Error(`No se pudo realizar su peticion de acortar link`);
+    return data.shortenedUrl;
   } catch (error) {
     message.reply(`Ha ocurrido un error al acortar el link\n${error}`);
   }

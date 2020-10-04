@@ -11,9 +11,9 @@
       "token": "",
       "URL": "https://kitsu.io/api/edge/anime"
     },
-    "adshrink": {
-      "token": "36343231375f5673494b4470616c685a46557a4447447058716a3377766d6f63733970416f50",
-      "URL": "https://www.shrink-service.it/v2/public/api/auth/key"
+    "shortst": {
+      "token": "b1400aac47d0668a1ea386f5206e3dbb",
+      "URL": "https://api.shorte.st/v1/data/url"
     }
   },
   "server": {
