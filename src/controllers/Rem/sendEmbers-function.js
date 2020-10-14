@@ -1,16 +1,17 @@
-const { sendHook } = require("../../providers/anime");
+const { sendHook } = require("../../services/anime");
 
 const Discord = require("discord.js");
 
 const sendEmbers = async (message, animeArr, link) => {
+  if (animeArr === undefined) return message.reply("Ha Ocurrido un error");
   let pagina = 1;
   let animes = animeArr;
   const paginas = []; //LISTA DE PÃGINAS
   for (let i = 0; i < animes.length; i++) {
     let pagina = new Discord.MessageEmbed()
       .setTitle("¿Qué anime deseas subir?")
-      .setDescription(animes[i].attributes.canonicalTitle)
-      .setImage(animes[i].attributes.posterImage.tiny)
+      .setDescription(animes[i].title)
+      .setImage(animes[i].image_url)
       .setFooter(`Pagina ${i + 1} de ${animes.length}`);
     //
     paginas.push(pagina);
@@ -50,7 +51,7 @@ const sendEmbers = async (message, animeArr, link) => {
 
   obtener.on("collect", async function (r) {
     await msg.delete().catch();
-    sendHook(animes[pagina - 1].attributes, link, message);
+    sendHook(animes[pagina - 1], link, message);
   }); //Baja hasta la Ãºltima pÃ¡gina.
 
   eliminar.on("collect", async function (r) {

@@ -7,13 +7,13 @@
     "rem": "https://discord.com/api/webhooks/761063846705627147/2OodnofzMn1UNI2QlR22BBmUzq8UMccuFCYW_MwUGz7N2hvx8Uuyi9Hq40dFFgSO856P"
   },
   "api": {
-    "kitsu": {
+    "jikan": {
       "token": "",
-      "URL": "https://kitsu.io/api/edge/anime"
+      "URL": "https://api.jikan.moe/v3"
     },
-    "shortst": {
-      "token": "b1400aac47d0668a1ea386f5206e3dbb",
-      "URL": "https://api.shorte.st/v1/data/url"
+    "ouo": {
+      "token": "N98ABU80",
+      "URL": "http://ouo.io/api"
     }
   },
   "server": {
