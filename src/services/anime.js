@@ -4,9 +4,9 @@ const { Webhook, MessageBuilder } = require("discord-webhook-node");
 const { rem } = webhook;
 const hook = new Webhook(rem);
 const axios = require("axios").default;
-const { jikan, ouo } = api;
-const { URL: shortURL, token } = ouo;
+const { jikan } = api;
 const { URL: jikanUrl } = jikan;
+const { shortLink } = require("./shortLink");
 
 const searchAnime = async (name) => {
   try {
@@ -32,6 +32,7 @@ const sendHook = async (anime, link, message) => {
   let { image_url, title, airing, synopsis, episodes, score, url } = anime;
   let description;
   let shortL = await shortLink(link, message);
+  console.log({ shortL }, { shortLink });
 
   if (shortL === undefined) return;
 
@@ -53,10 +54,10 @@ const sendHook = async (anime, link, message) => {
         .setTitle(title)
         .setDescription(`${description}`)
         .setImage(image_url)
-        .addField("Score", `${score}`,true)
-        .addField("Episodios", `${episodes}`,true)
+        .addField("Score", `${score}`, true)
+        .addField("Episodios", `${episodes}`, true)
         .addField("Estado", !airing ? "Finalizado" : "En Emision", true)
-        .addField(server, `${shortL}`,)
+        .addField(server, `${shortL}`)
         .setTimestamp();
 
       hook
@@ -72,21 +73,7 @@ const sendHook = async (anime, link, message) => {
   );
 };
 
-const shortLink = async (link, message) => {
-  try {
-    const resp = await axios.get(`${shortURL}/${token}`, {
-      params: {
-        s: link,
-      },
-    });
-    return resp.data;
-  } catch (error) {
-    message.reply(`Ha ocurrido un error al acortar el link\n${error}`);
-  }
-};
-
 module.exports = {
   searchAnime,
   sendHook,
-  shortLink,
 };

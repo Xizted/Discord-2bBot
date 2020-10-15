@@ -20,6 +20,6 @@
     "translate-google": "^1.4.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.5"
   }
 }

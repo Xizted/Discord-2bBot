@@ -1,5 +1,5 @@
-const { searchAnime } = require("../services/anime");
-const { sendEmbers } = require("../controllers/Rem/remFunctions");
+const { searchAnime } = require("../services/services.exports");
+const { sendEmbers } = require("../controllers/Rem/rem.exports");
 
 let link, nombreAnime, nombreAnimeArr, animes, animeID, server;
 
