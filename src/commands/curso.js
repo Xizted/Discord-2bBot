@@ -18,8 +18,8 @@ module.exports = {
         return message.reply(`Link no valido!!!, debe incluir: ${server.mega}`);
 
       if (
-        img.match(/(\W|^)(png|jpg)(\W|$)/) === null &&
-        args[1].match(/(\W|^)(png|jpg)(\W|$)/) === null
+        img.match(/(\W|^)(png|jpg|jpeg)(\W|$)/) === null &&
+        args[1].match(/(\W|^)(png|jpg|jpeg)(\W|$)/) === null
       )
         return message.reply(
           `Imagen no valida!!!, debe incluir: .png o .jpg al final del link`
