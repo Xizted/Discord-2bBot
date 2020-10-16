@@ -1,4 +1,4 @@
-const { sendHook } = require("../../services/anime");
+const { sendHookRem } = require("../../services/anime");
 
 const Discord = require("discord.js");
 
@@ -51,7 +51,7 @@ const sendEmbers = async (message, animeArr, link) => {
 
   obtener.on("collect", async function (r) {
     await msg.delete().catch();
-    sendHook(animes[pagina - 1], link, message);
+    sendHookRem(animes[pagina - 1], link, message);
   }); //Baja hasta la Ãºltima pÃ¡gina.
 
   eliminar.on("collect", async function (r) {

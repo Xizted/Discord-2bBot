@@ -8,7 +8,7 @@ const { jikan } = api;
 const { URL: jikanUrl } = jikan;
 const { shortLink } = require("./shortLink");
 
-const searchAnime = async (name) => {
+const searchAnimeRem = async (name) => {
   try {
     const resp = await axios.get(`${jikanUrl}/search/anime`, {
       params: {
@@ -28,11 +28,10 @@ const searchAnime = async (name) => {
   }
 };
 
-const sendHook = async (anime, link, message) => {
+const sendHookRem = async (anime, link, message) => {
   let { image_url, title, airing, synopsis, episodes, score, url } = anime;
   let description;
   let shortL = await shortLink(link, message);
-  console.log({ shortL }, { shortLink });
 
   if (shortL === undefined) return;
 
@@ -74,6 +73,6 @@ const sendHook = async (anime, link, message) => {
 };
 
 module.exports = {
-  searchAnime,
-  sendHook,
+  searchAnimeRem,
+  sendHookRem,
 };

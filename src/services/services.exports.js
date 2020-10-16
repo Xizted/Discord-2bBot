@@ -1,8 +1,22 @@
-const { searchAnime, sendHook } = require("./anime");
+/**
+ *  - Rem Service
+ */
+const { searchAnimeRem, sendHookRem } = require("./anime");
+
+/**
+ *  - Prunia Service
+ */
+
+const { sendHookPrunia } = require("./curso");
+
+/**
+ * Global Service
+ */
 const shortLink = require("./shortLink");
 
 module.exports = {
-  searchAnime,
-  sendHook,
+  searchAnimeRem,
+  sendHookRem,
+  sendHookPrunia,
   shortLink,
 };

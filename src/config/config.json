@@ -4,7 +4,8 @@
     "prefix": "2!"
   },
   "webhook": {
-    "rem": "https://discord.com/api/webhooks/761063846705627147/2OodnofzMn1UNI2QlR22BBmUzq8UMccuFCYW_MwUGz7N2hvx8Uuyi9Hq40dFFgSO856P"
+    "rem": "https://discord.com/api/webhooks/761063846705627147/2OodnofzMn1UNI2QlR22BBmUzq8UMccuFCYW_MwUGz7N2hvx8Uuyi9Hq40dFFgSO856P",
+    "prunia": "https://discord.com/api/webhooks/766445059654549536/fbFTuRtccXDRYxQCienRf7tCvoDjBdNDoJLimrbZDkXE5o-EB1oaAw0fIJXuDAhUXPTp"
   },
   "api": {
     "jikan": {

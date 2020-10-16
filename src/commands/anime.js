@@ -1,7 +1,8 @@
-const { searchAnime } = require("../services/services.exports");
+const { searchAnimeRem } = require("../services/services.exports");
 const { sendEmbers } = require("../controllers/Rem/rem.exports");
+const { server } = require("../config/config.json");
 
-let link, nombreAnime, nombreAnimeArr, animes, animeID, server;
+let link, nombreAnime, nombreAnimeArr, animes;
 
 module.exports = {
   name: "anime",
@@ -14,8 +15,8 @@ module.exports = {
         );
       link = args[0];
 
-      if (!link.startsWith("https://") && !args[0].startsWith("https://"))
-        return message.reply(`Link no valido!!!, debe incluir: https://`);
+      if (!link.includes(server.mega) && !args[0].includes(server.mega))
+        return message.reply(`Link no valido!!!, debe incluir: ${server.mega}`);
 
       nombreAnimeArr = [];
       for (let i = 1; i < args.length; i++) {
@@ -23,7 +24,7 @@ module.exports = {
       }
       nombreAnime = nombreAnimeArr.join(" ");
 
-      animes = await searchAnime(nombreAnime);
+      animes = await searchAnimeRem(nombreAnime);
 
       sendEmbers(message, animes, link);
     } catch (error) {
