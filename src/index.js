@@ -1,5 +1,5 @@
 const { bot } = require("./config/config.json");
-const { prefix, token } = bot;
+const { prefix, token, roles } = bot;
 
 const fs = require("fs");
 const Discord = require("discord.js");
@@ -25,7 +25,7 @@ client.on("message", (message) => {
   if (
     !message.content.startsWith(prefix) ||
     message.author.bot ||
-    !message.member.roles.cache.some((role) => role.name === "admin")
+    !message.member.roles.cache.some((role) => roles.includes(role.name))
   )
     return;
   const args = message.content.slice(prefix.length).trim().split(/ +/); // Argunmentos
@@ -36,7 +36,7 @@ client.on("message", (message) => {
   try {
     client.commands.get(command).execute(message, args);
   } catch (err) {
-    message.reply("Hubo un error al tratar de ejecutar ese comando! 4" + err );
+    message.reply("Hubo un error al tratar de ejecutar ese comando! 4" + err);
   }
 });
 

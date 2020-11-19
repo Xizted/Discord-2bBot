@@ -1,7 +1,8 @@
 {
   "bot": {
     "token": "NzYwOTgwMzQyODQ4NjE4NTI2.X3T8LA.UUuar-3VjDM4qxAiL3uQt42agJk",
-    "prefix": "2!"
+    "prefix": "2!",
+    "roles": ["admin", "a"]
   },
   "webhook": {
     "rem": "https://discord.com/api/webhooks/761063846705627147/2OodnofzMn1UNI2QlR22BBmUzq8UMccuFCYW_MwUGz7N2hvx8Uuyi9Hq40dFFgSO856P",
